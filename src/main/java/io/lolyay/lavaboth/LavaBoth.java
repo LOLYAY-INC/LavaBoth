@@ -1,0 +1,7 @@
+package io.lolyay.lavaboth;
+
+import io.lolyay.eventbus.EventBus;
+
+public abstract class LavaBoth {
+    public static final EventBus eventBus = new EventBus();
+}
