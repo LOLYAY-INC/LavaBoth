@@ -29,7 +29,7 @@ public class LavaLinkRestClient {
     private final ExecutorService responseHandlerExecutor;
 
     public LavaLinkRestClient(JLavaLinkClientInfo info) {
-        String wsUrl = info.connection().uri().toString() + ":" + info.connection().port();
+        String wsUrl = info.connection().uri().toString();
         // Correctly derive HTTP URL from WebSocket URL
         String httpUrl = wsUrl.startsWith("wss://")
                 ? wsUrl.replaceFirst("wss://", "https://")

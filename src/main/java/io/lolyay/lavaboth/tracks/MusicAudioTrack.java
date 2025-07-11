@@ -1,7 +1,6 @@
 package io.lolyay.lavaboth.tracks;
 
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
-import dev.arbjerg.lavalink.client.player.Track;
 import dev.lavalink.youtube.clients.skeleton.Client;
 import io.lolyay.jlavalink.v4.datatypes.ClientTrack;
 import io.lolyay.lavaboth.backends.common.TrackEncodingException;

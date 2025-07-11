@@ -9,7 +9,6 @@ import com.google.gson.annotations.SerializedName;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
-import dev.arbjerg.lavalink.protocol.v4.Message;
 import io.lolyay.jlavalink.v4.datatypes.ClientPlayer;
 import io.lolyay.jlavalink.v4.rest.ResponseParser;
 import io.lolyay.jlavalink.v4.rest.handlers.resthandlers.RestGetPlayerResult;

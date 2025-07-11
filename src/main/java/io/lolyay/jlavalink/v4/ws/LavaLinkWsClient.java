@@ -26,7 +26,7 @@ public class LavaLinkWsClient {
     public void init() {
         webSocketClient = new WsClientImpl(
                 jLavaLinkClient,
-                URI.create(clientInfo.connection().uri().toString() + ":" + clientInfo.connection().port() + "/v4/websocket"),
+                URI.create(clientInfo.connection().uri().toString() + "/v4/websocket"),
                 getHeaders()
         );
         webSocketClient.connect();

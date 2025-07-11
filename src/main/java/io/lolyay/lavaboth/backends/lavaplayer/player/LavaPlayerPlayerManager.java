@@ -25,7 +25,8 @@ public class LavaPlayerPlayerManager extends AbstractPlayerManager {
         if(decoderFormat != null)
             audioPlayerManager.getConfiguration().setOutputFormat(decoderFormat);
         audioPlayerManager.setUseSeekGhosting(useGhostSeeking);
-        audioPlayerManager.setTrackStuckThreshold(trackStuckTimeout);
+        if(trackStuckTimeout > 0)
+            audioPlayerManager.setTrackStuckThreshold(trackStuckTimeout);
         playerFactory = new LavaPlayerFactory(this);
         searchManager = new LavaPlayerSearchManager(this);
 

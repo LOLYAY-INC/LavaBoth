@@ -9,7 +9,7 @@ public class LavaPlayerBuilder {
     private int opusEncodingQuality = 5;
     private AudioDataFormat decoderFormat;
     private boolean useGhostSeeking = true;
-    private int trackStuckTimeout;
+    private int trackStuckTimeout = 0;
 
 
     public LavaPlayerBuilder setResamplingQuality(AudioConfiguration.ResamplingQuality resamplingQuality) {
