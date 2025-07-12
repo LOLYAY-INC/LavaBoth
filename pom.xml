@@ -6,7 +6,7 @@
 
     <groupId>io.lolyay</groupId>
     <artifactId>lavaboth</artifactId>
-    <version>0.2.3</version>
+    <version>0.3.3</version>
 
     <properties>
         <maven.compiler.source>23</maven.compiler.source>
@@ -16,8 +16,8 @@
 
     <distributionManagement>
         <repository>
-            <id>github</id> <!-- This ID is important for authentication -->
-            <name>GitHub LOLYAY-INC Apache Maven Packages</name>
+            <id>github</id>
+            <name>GitHub Packages</name>
             <url>https://maven.pkg.github.com/LOLYAY-INC/LavaBoth</url>
         </repository>
     </distributionManagement>
@@ -25,7 +25,7 @@
     <repositories>
         <repository>
             <id>TopiWTF-releases</id>
-            <name>Topis Maven Repo</name>
+            <name>LavaSrc Repo</name>
             <url>https://maven.topi.wtf/releases</url>
         </repository>
         <repository>
@@ -48,11 +48,7 @@
         <dependency>
             <groupId>net.dv8tion</groupId>
             <artifactId>JDA</artifactId>
-            <version>5.5.1</version> <!-- replace $version with the latest version -->
-            <exclusions>
-                <!-- required for encoding audio into opus, not needed if audio is already provided in opus encoding -->
-
-            </exclusions>
+            <version>5.5.1</version>
         </dependency>
         <dependency>
             <groupId>com.google.code.gson</groupId>
