@@ -1,6 +1,7 @@
 package io.lolyay.lavaboth.search;
 
 
+import dev.lavalink.youtube.clients.Music;
 import io.lolyay.lavaboth.tracks.MusicAudioTrack;
 import io.lolyay.lavaboth.tracks.PlaylistData;
 
@@ -18,8 +19,8 @@ public record Search(Optional<MusicAudioTrack> track, String query, String sourc
         return new Search(Optional.of(playlistData.selectedTrack()), query, source, result, playlistData);
     }
 
-    public static Search wasTrack(SearchResult result, String source, String query, MusicAudioTrack track) {
-        return new Search(Optional.of(track), query, source, result, null);
+    public static Search wasTrack(SearchResult result, String source, String query, ArrayList<MusicAudioTrack> trackList) {
+        return new Search(Optional.of(trackList.getFirst()), query, source, result, new PlaylistData(trackList, "Search Result", 0));
     }
 
     public static Search wasNotFound(SearchResult result, String source, String query) {

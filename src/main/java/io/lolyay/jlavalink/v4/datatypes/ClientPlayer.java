@@ -71,7 +71,7 @@ public class ClientPlayer {
         assert client != null;
         UpdatePlayerPacket.Request request = new UpdatePlayerPacket.Request();
         request.track = new UpdatePlayerPacket.UpdatePlayerTrack();
-        request.track.encoded = "";
+        request.track.encoded = null;
         CompletableFuture<ClientPlayer> future = new CompletableFuture<>();
         client.getRestSender().execute(
                 new UpdatePlayerPacket(true, guildId, client.getSessionId(), request),
@@ -106,7 +106,19 @@ public class ClientPlayer {
         UpdatePlayerPacket.Request request = new UpdatePlayerPacket.Request();
         request.voice = voiceState;
         CompletableFuture<ClientPlayer> future = new CompletableFuture<>();
-        sendPlayerUpdate(request, future);
+        client.getRestSender().execute(
+                new UpdatePlayerPacket(true, guildId, client.getSessionId(), request),
+                new ResponseHandler<>() {
+                    @Override
+                    public void onSuccess(RestGetPlayerResult response) {
+                        future.complete(response);
+                    }
+                    @Override
+                    public void onError(Throwable error) {
+                        future.completeExceptionally(error);
+                    }
+                }
+        );
         return future;
     }
 

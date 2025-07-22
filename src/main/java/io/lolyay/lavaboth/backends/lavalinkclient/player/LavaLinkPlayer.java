@@ -8,10 +8,13 @@ import io.lolyay.jlavalink.v4.datatypes.ClientTrack;
 import io.lolyay.lavaboth.backends.common.AbstractPlayer;
 import io.lolyay.lavaboth.backends.common.TrackDecodingException;
 import io.lolyay.lavaboth.backends.lavalinkclient.LavaLinkTrackCoder;
+import io.lolyay.lavaboth.backends.lavalinkclient.LinkVoiceDispatchInterceptor;
 import io.lolyay.lavaboth.tracks.MusicAudioTrack;
 import io.lolyay.lavaboth.tracks.RequestorData;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.channel.middleman.AudioChannel;
+
+import java.util.concurrent.CompletableFuture;
 
 public class LavaLinkPlayer extends AbstractPlayer {
     private final ClientPlayer clientPlayer;
@@ -72,7 +75,10 @@ public class LavaLinkPlayer extends AbstractPlayer {
 
     @Override
     public void connect(AudioChannel channel) {
+        CompletableFuture<LavaLinkPlayer> future = new CompletableFuture<>();
+        LinkVoiceDispatchInterceptor.connectWaitFuture = future;
         channel.getJDA().getDirectAudioController().connect(channel);
+        future.join();
     }
 
     @Override

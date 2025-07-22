@@ -1,6 +1,7 @@
 package io.lolyay.jlavalink;
 
 import io.lolyay.jlavalink.v4.datatypes.ClientPlayer;
+import io.lolyay.jlavalink.v4.datatypes.ClientTrack;
 import io.lolyay.jlavalink.v4.rest.handlers.ResponseHandler;
 import io.lolyay.jlavalink.v4.rest.handlers.resthandlers.RestEmptyResult;
 import io.lolyay.jlavalink.v4.rest.handlers.resthandlers.RestGetPlayerResult;
@@ -59,31 +60,11 @@ public class ClientPlayerFactory {
     // PRIVATE HELPERS
 
     private ClientPlayer iCreatePlayer(String guildId) {
-        CompletableFuture<ClientPlayer> future = new CompletableFuture<>();
         UpdatePlayerPacket.Request request = new UpdatePlayerPacket.Request();
-        request.volume = client.getClientInfo().defaultVolume();
-
-        client.getRestSender().execute(
-                new UpdatePlayerPacket(
-                        false,
-                        guildId,
-                        client.getSessionId(),
-                        request
-                ),
-                new ResponseHandler<>() {
-                    @Override
-                    public void onSuccess(RestGetPlayerResult response) {
-                        response.client = client;
-                        future.complete(response);
-                    }
-
-                    @Override
-                    public void onError(Throwable error) {
-                        future.completeExceptionally(error);
-                    }
-                }
-        );
-        return future.join();
+        ClientPlayer player = new ClientPlayer();
+        player.guildId = guildId;
+        player.client = client;
+        return player;
     }
 
 

@@ -1,5 +1,6 @@
 package io.lolyay.jlavalink.v4.ws.packet.packets.S2C;
 
+import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
 import io.lolyay.jlavalink.v4.datatypes.ClientPlayer;
 import io.lolyay.jlavalink.v4.ws.packet.AbstractPacket;
@@ -15,9 +16,13 @@ public class S2CPlayerUpdatePacket extends AbstractPacket implements S2CPacket {
 
     @Override
     public void recivePacket() {
-        Logger.log("Player update packet received");
-        ClientPlayer player = getClient().getClientPlayerFactory().getOrCreatePlayer(guildId);
-        player.playerState = state;
+        try {
+            ClientPlayer player = getClient().getClientPlayerFactory().getOrCreatePlayer(guildId);
+            player.playerState = state;
+        } catch (Exception e) {
+            Logger.err(e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     @Override

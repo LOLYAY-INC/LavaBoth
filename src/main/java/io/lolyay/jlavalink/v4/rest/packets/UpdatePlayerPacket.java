@@ -127,7 +127,7 @@ public class UpdatePlayerPacket implements Packet<RestGetPlayerResult> {
     public static class UpdatePlayerTrack{
         @Expose
         @Nullable
-        public String encoded;
+        public String encoded = null;
         @Expose
         @Nullable
         public RequestorData userData;

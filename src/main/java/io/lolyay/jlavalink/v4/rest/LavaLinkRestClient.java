@@ -58,7 +58,7 @@ public class LavaLinkRestClient {
                             // Check for HTTP error status codes first
                             if (response.statusCode() < 200 || response.statusCode() >= 300) {
                                 RestErrorResponse errorResponse = gson.fromJson(response.body(), RestErrorResponse.class);
-                                handler.onError(new RuntimeException("Lavalink returned an error: " + errorResponse.message()));
+                                handler.onError(new RuntimeException("Lavalink returned an error: " + errorResponse.message() + " (" + errorResponse.error() + ")" + errorResponse.trace() + response.statusCode()));
                                 return;
                             }
                             // Delegate parsing to the packet-specific parser
@@ -86,6 +86,8 @@ public class LavaLinkRestClient {
                 .map(body -> packet.toJson())
                 .map(HttpRequest.BodyPublishers::ofString)
                 .orElse(HttpRequest.BodyPublishers.noBody());
+
+
 
         return HttpRequest.newBuilder()
                 .uri(URI.create(fullUrl))

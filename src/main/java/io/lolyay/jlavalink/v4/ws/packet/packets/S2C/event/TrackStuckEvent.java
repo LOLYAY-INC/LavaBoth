@@ -6,6 +6,7 @@ import io.lolyay.lavaboth.LavaBoth;
 import io.lolyay.lavaboth.backends.common.MusicTrackEndReason;
 import io.lolyay.lavaboth.backends.lavalinkclient.player.LavaLinkPlayer;
 import io.lolyay.lavaboth.tracks.MusicAudioTrack;
+import io.lolyay.lavaboth.utils.Logger;
 
 @NoPacket
 public class TrackStuckEvent extends S2CBaseEventPacket {
@@ -19,5 +20,6 @@ public class TrackStuckEvent extends S2CBaseEventPacket {
         LavaBoth.eventBus.post(new io.lolyay.lavaboth.events.track.TrackStuckEvent(
                 MusicAudioTrack.fromTrack(track,track.getUserData()
                 ), player, getClient().getPlayerManager(), thresholdMs));
+        Logger.err("Track stuck: " + thresholdMs + "ms");
     }
 }

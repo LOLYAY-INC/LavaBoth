@@ -38,7 +38,7 @@ public class WsClientImpl extends WebSocketClient {
 
     @Override
     public void onClose(int i, String s, boolean b) {
-
+        Logger.err("Connection closed: " + s);
     }
 
     @Override

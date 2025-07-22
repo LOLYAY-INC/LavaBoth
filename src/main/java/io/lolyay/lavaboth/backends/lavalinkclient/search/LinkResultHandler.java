@@ -11,16 +11,21 @@ import io.lolyay.lavaboth.backends.lavalinkclient.player.LavaLinkPlayerManager;
 import io.lolyay.lavaboth.search.Search;
 import io.lolyay.lavaboth.tracks.MusicAudioTrack;
 import io.lolyay.lavaboth.tracks.PlaylistData;
+import io.lolyay.lavaboth.utils.Logger;
+import org.checkerframework.checker.units.qual.A;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
 public class LinkResultHandler implements Consumer<RestLoadResult<?>> {
-    private final Consumer<Search> callback;
+    private final CompletableFuture<Search> callback;
     private final LavaLinkPlayerManager playerManager;
     private final LavaLinkSearchManager.LinkQuery searchQuery;
 
-    public LinkResultHandler(Consumer<Search> callback, LavaLinkPlayerManager playerManager, LavaLinkSearchManager.LinkQuery searchQuery) {
+    public LinkResultHandler(CompletableFuture<Search> callback, LavaLinkPlayerManager playerManager, LavaLinkSearchManager.LinkQuery searchQuery) {
         this.callback = callback;
         this.searchQuery = searchQuery;
         this.playerManager = playerManager;
@@ -30,10 +35,10 @@ public class LinkResultHandler implements Consumer<RestLoadResult<?>> {
     public void trackLoaded(ClientTrack clientTrack) {
         MusicAudioTrack musicAudioTrack = MusicAudioTrack.fromTrack(clientTrack, searchQuery.getRequestorData());
 
-        callback.accept(Search.wasTrack(
+        callback.complete(Search.wasTrack(
                 Search.SearchResult.SUCCESS(), searchQuery.getSource().getSourceName(),
                 searchQuery.getQuery(),
-                musicAudioTrack
+                new ArrayList<>(List.of(musicAudioTrack))
         ));
     }
 
@@ -46,7 +51,7 @@ public class LinkResultHandler implements Consumer<RestLoadResult<?>> {
         );
 
 
-        callback.accept(Search.wasPlaylist(
+        callback.complete(Search.wasPlaylist(
                 Search.SearchResult.PLAYLIST(),
                 searchQuery.getSource().getSourceName(),
                 searchQuery.getQuery(),
@@ -56,7 +61,7 @@ public class LinkResultHandler implements Consumer<RestLoadResult<?>> {
 
 
     public void noMatches() {
-        callback.accept(Search.wasNotFound(
+        callback.complete(Search.wasNotFound(
                 Search.SearchResult.NOT_FOUND(),
                 searchQuery.getSource().getSourceName(),
                 searchQuery.getQuery()
@@ -64,7 +69,7 @@ public class LinkResultHandler implements Consumer<RestLoadResult<?>> {
     }
 
     public void loadFailed(ClientException e) {
-        callback.accept(Search.wasError(
+        callback.complete(Search.wasError(
                 Search.SearchResult.ERROR(e.getMessage()),
                 searchQuery.getSource().getSourceName(),
                 searchQuery.getQuery()
@@ -72,8 +77,16 @@ public class LinkResultHandler implements Consumer<RestLoadResult<?>> {
     }
 
     private void trackSearch(ClientTrack[] searchLoadResult) {
-        //TODO: MULTIPLE SEARCH
-        trackLoaded(searchLoadResult[0]);
+        ArrayList<MusicAudioTrack> trackList = new ArrayList<>();
+        for (ClientTrack track : searchLoadResult) {
+            trackList.add(MusicAudioTrack.fromTrack( track, searchQuery.getRequestorData()));
+        }
+
+        callback.complete(Search.wasTrack(
+                Search.SearchResult.SUCCESS(), searchQuery.getSource().getSourceName(),
+                searchQuery.getQuery(),
+                trackList
+        ));
     }
 
 

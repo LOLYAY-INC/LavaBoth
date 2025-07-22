@@ -13,6 +13,7 @@ import io.lolyay.jlavalink.v4.rest.packets.LoadTracksPacket;
 import io.lolyay.jlavalink.v4.ws.LavaLinkWsClient;
 import io.lolyay.jlavalink.v4.ws.packet.handlers.PacketInitializer;
 import io.lolyay.lavaboth.backends.lavalinkclient.player.LavaLinkPlayerManager;
+import io.lolyay.lavaboth.utils.Logger;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.CompletableFuture;

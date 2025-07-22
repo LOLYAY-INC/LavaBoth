@@ -9,15 +9,18 @@ import io.lolyay.lavaboth.tracks.MusicAudioTrack;
 import io.lolyay.lavaboth.tracks.PlaylistData;
 import io.lolyay.lavaboth.search.Search;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
 public class LavaResultHandler implements AudioLoadResultHandler {
-    private final Consumer<Search> callback;
     private final LavaPlayerPlayerManager playerManager;
     private final LavaPlayerSearchManager.LavaQuery searchQuery;
+    private final CompletableFuture<Search> future;
 
-    public LavaResultHandler(Consumer<Search> callback, LavaPlayerPlayerManager playerManager, LavaPlayerSearchManager.LavaQuery searchQuery) {
-        this.callback = callback;
+    public LavaResultHandler(CompletableFuture<Search> future, LavaPlayerPlayerManager playerManager, LavaPlayerSearchManager.LavaQuery searchQuery) {
+        this.future = future;
         this.searchQuery = searchQuery;
         this.playerManager = playerManager;
     }
@@ -26,10 +29,10 @@ public class LavaResultHandler implements AudioLoadResultHandler {
     public void trackLoaded(AudioTrack audioTrack) {
         MusicAudioTrack musicAudioTrack = MusicAudioTrack.fromTrack(playerManager, audioTrack, searchQuery.getRequestorData());
 
-        callback.accept(Search.wasTrack(
+        future.complete(Search.wasTrack(
                 Search.SearchResult.SUCCESS(), searchQuery.getSource().getSourceName(),
                 searchQuery.getQuery(),
-                musicAudioTrack
+                new ArrayList<>(List.of(musicAudioTrack))
         ));
     }
 
@@ -43,7 +46,7 @@ public class LavaResultHandler implements AudioLoadResultHandler {
             PlaylistData playlistData = PlaylistData.fromTracksAndInfo(playerManager ,audioPlaylist.getTracks(), audioPlaylist, searchQuery.getRequestorData());
 
 
-            callback.accept(Search.wasPlaylist(
+        future.complete(Search.wasPlaylist(
                     Search.SearchResult.PLAYLIST(),
                     searchQuery.getSource().getSourceName(),
                     searchQuery.getQuery(),
@@ -54,7 +57,7 @@ public class LavaResultHandler implements AudioLoadResultHandler {
 
     @Override
     public void noMatches() {
-        callback.accept(Search.wasNotFound(
+        future.complete(Search.wasNotFound(
                 Search.SearchResult.NOT_FOUND(),
                 searchQuery.getSource().getSourceName(),
                 searchQuery.getQuery()
@@ -63,7 +66,7 @@ public class LavaResultHandler implements AudioLoadResultHandler {
 
     @Override
     public void loadFailed(FriendlyException e) {
-        callback.accept(Search.wasError(
+        future.complete(Search.wasError(
                 Search.SearchResult.ERROR(e.getMessage()),
                 searchQuery.getSource().getSourceName(),
                 searchQuery.getQuery()
@@ -71,10 +74,16 @@ public class LavaResultHandler implements AudioLoadResultHandler {
     }
 
     private void trackSearch(AudioPlaylist audioPlaylist) {
-        //TODO: MULTIPLE SEARCH
-        trackLoaded(audioPlaylist.getSelectedTrack() == null ? audioPlaylist.getTracks().getFirst() : audioPlaylist.getSelectedTrack());
+        ArrayList<MusicAudioTrack> trackList = new ArrayList<>();
+        for (AudioTrack track : audioPlaylist.getTracks()) {
+            trackList.add(MusicAudioTrack.fromTrack(playerManager, track, searchQuery.getRequestorData()));
+        }
+
+        future.complete(Search.wasTrack(
+                Search.SearchResult.SUCCESS(), searchQuery.getSource().getSourceName(),
+                searchQuery.getQuery(),
+                trackList
+        ));
+
     }
-
-
-
 }

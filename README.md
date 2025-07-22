@@ -1,108 +1,169 @@
-# LavaBoth - LavaPlayer + Lavalink
+# LavaBoth
 
-When making a Discord bot, the most common way to play music is by using Lavalink or LavaPlayer.
-Most of the time you need to decide wich one to use, and it's very hard to switch between them.
+[![Maven Central](https://img.shields.io/maven-central/v/io.lolyay/lavaboth?style=for-the-badge&label=Maven%20Central)](https://search.maven.org/artifact/io.lolyay/lavaboth)
+[![GitHub Issues](https://img.shields.io/github/issues/LOLYAY-INC/LavaBoth?style=for-the-badge)](https://github.com/LOLYAY-INC/LavaBoth/issues)
+[![License](https://img.shields.io/github/license/LOLYAY-INC/LavaBoth?style=for-the-badge)](https://github.com/LOLYAY-INC/LavaBoth/blob/main/LICENSE)
 
-LavaBoth is a library that makes it easier to switch between Lavalink and LavaPlayer.
+A unified library providing a single API for both **LavaPlayer** and **Lavalink**, making it seamless to switch between local and server-based audio playback for your Discord bot.
 
-Its one library that's easy to set up and allows you to switch between Lavalink and LavaPlayer easily.
-It's designed to work with Jda, but can be used with other Discord libraries.
+## The Problem
+When building a music-focused Discord bot with Java, developers typically have to choose between two excellent libraries: LavaPlayer (for local processing) and Lavalink (for a standalone audio server). The APIs are different, and migrating from one to the other can be a significant undertaking.
 
-## Installation:
-Maven:
-````xml
+## The Solution
+**LavaBoth** abstracts the differences between these two systems, providing a single, consistent interface for all your audio needs. You can write your music logic once and switch the backend implementation with only a few lines of code. It's designed primarily for **JDA** but is flexible enough to be adapted for other Discord libraries.
+
+## Features
+*   **Unified API:** A single set of methods for both Lavalink and LavaPlayer.
+*   **Easy to Switch:** Change your entire audio backend by swapping out a single class.
+*   **Built-in Search:** A powerful search manager to find tracks and playlists.
+*   **Extensible:** Easily add custom audio sources and search providers.
+
+## Installation
+
+### Maven
+Add the repository and dependency to your `pom.xml`:
+```xml
 <repositories>
     <repository>
-        <id>github</id>
-        <url>https://maven.pkg.github.com/LOLYAY-INC/LavaBoth</url>
+        <id>lolyay-releases</id>
+        <name>lolyay.dev Maven Repo</name>
+        <url>https://maven.lolyay.dev/releases</url>
     </repository>
 </repositories>
-````
-```xml
-<dependency>
-    <groupId>io.lolyay</groupId>
-    <artifactId>lavaboth</artifactId>
-    <version>0.2.3</version>
-</dependency>
+
+<dependencies>
+    <dependency>
+        <groupId>io.lolyay</groupId>
+        <artifactId>lavaboth</artifactId>
+        <version>4.0.1</version>
+    </dependency>
+</dependencies>
 ```
 
-## Usage:
-This tutorial focuses on using LavaBoth with Jda.
+### Gradle (Kotlin DSL)
+Add the repository and dependency to your `build.gradle.kts`:
+```kotlin
+repositories {
+    mavenCentral()
+    maven("https://maven.lolyay.dev/releases")
+}
 
-Firstly, you need to create a PlayerManager:
-This is the only thing different between Lavalink and LavaPlayer.
+dependencies {
+    implementation("io.lolyay:lavaboth:4.0.1")
+}
+```
 
-### Lavalink
+## Usage
+This guide focuses on using LavaBoth with JDA.
 
-```java 
+### Step 1: Create a PlayerManager
+This is the only part of your code that needs to know whether you're using Lavalink or LavaPlayer. Choose **one** of the following options.
+
+#### Option A: Lavalink
+This setup connects to a running Lavalink server.
+```java
+// This must be configured before calling jdaBuilder.build()
 AbstractPlayerManager playerManager = new LavaLinkPlayerManager(
-        /* Your JDABuilder BEFORE calling .build() */         jdaBuilder,
-        /* Your bot's user ID */                              botUserId,
-        
-        /* Your Lavalink connection info */                   new ConnectionInfo(
-        /* Name of your Lavalink server (currently unused) */ "LavaBoth",
-        /* Your Lavalink host (change ws to wss if secure) */ "ws://some.lavalink.host:2333",
-        /* Secure? */                                         true,
-        /* Your Lavalink password */                          "password"
-        ) 
+    /* Your JDABuilder */       jdaBuilder,
+    /* Your bot's user ID */    botUserId,
+    /* Connection info */       new ConnectionInfo(
+        /* Server name (unused) */  "LavaBoth",
+        /* Host (use wss:// for secure) */ "ws://lavalink.example.com:2333",
+        /* Is secure? */            false,
+        /* Password */              "youshallnotpass"
+    )
 );
 ```
 
-### LavaPlayer
-*Hint: This doesn't need to be run before Building Your Jda.*
-
+#### Option B: LavaPlayer
+This setup runs the audio processing locally within your bot's process.
 ```java
+// This can be run at any time.
 AbstractPlayerManager playerManager = LavaPlayerPlayerManager.getBuilder()
-        /* OPTIONAL: Set decoder format if you need to ( Won't work with JDA ) */.setDecoderFormat(new Pcm16AudioDataFormat(/*...*/))
-        /* OPTIONAL: Set opus encoding quality 1 to 10 ( Default is 5 )        */.setOpusEncodingQuality(5)
-        /* OPTIONAL: Set resampling quality (Default ResamplingQuality.MEDIUM) */.setResamplingQuality(ResamplingQuality.MEDIUM)
-        /* OPTIONAL: Set track stuck timeout                                   */.setTrackStuckTimeout(60)
-        /* OPTIONAL: Use ghost seeking                                         */.setUseGhostSeeking(true)
-        .build();
+    // Optional configuration
+    .setOpusEncodingQuality(10)
+    .setResamplingQuality(ResamplingQuality.HIGH)
+    .setTrackStuckTimeout(10000)
+    .build();
 
-new SourcesBuilder(playerPlayerManager)
-/* Add Default Sources */                       .addDefault()
-/* You can also add custom sources */           .addSource(YourCustomAudioSourceManager source)                 
+// Configure and register audio sources
+new SourcesBuilder(playerManager)
+    .addDefault() // YouTube, SoundCloud, etc.
+    // .addYoutubeDlp("path/to/yt-dlp.exe") // For better YouTube support
+    .buildAndRegister();
 
-// For the built in SearchManager to work you need to add one of the following youtube sources:
-/* Add Youtube Dlp */                           .addYoutubeDlp("path/to/youtube-dlp.exe")
-/* Add Youtube */                               .addYoutube("oauth-token")
-/* If you don't have a oauth token, leave the parameter as an empty string, it will ask you to log in, then save the token it gives you in console... */ 
-/* Register all sources                       */.buildAndRegister();
-
+// Register search providers for the search manager
+playerManager.getSearchManager().registerDefaultSearchers();
 ```
 
+### Step 2: Searching for a Track
+Use the unified `SearchManager` to find audio.
 
-### Global:
-
-Searching for a track:
 ```java
+// RequestorData can store who requested a track.
+// Use RequestorData.ofMember(member), RequestorData.system(), or RequestorData.anonymous().
+RequestorData requestor = RequestorData.ofMember(event.getMember());
+
 playerManager.getSearchManager().search(query, search -> {
-        // Returns a Search object
-        if (search.isSuccess()) {
-            // Do something with the track
-        
-        }
-        if (search.result().status() == SearchResult.Status.PLAYLIST) {
-            // Loaded a Playlist
-        }
+    switch (search.result().getStatus()) {
+        case SUCCESS:
+            // A single track was found
+            AudioTrack track = search.track().get();
+            System.out.println("Found track: " + track.getInfo().getTitle());
+            // Now you can play the track (see Step 3)
+            playTrack(guild, track);
+            break;
 
-});
+        case PLAYLIST:
+            // A playlist was found
+            AudioPlaylist playlist = search.playlistData().playlist();
+            System.out.println("Found playlist: " + playlist.getName());
+            // You can add the whole playlist to your queue
+            queue.addAll(playlist.getTracks());
+            break;
 
+        case NOT_FOUND:
+            System.out.println("Nothing found for your query.");
+            break;
+
+        case ERROR:
+            System.out.println("Error searching: " + search.result().getMessage());
+            break;
+    }
+}, requestor);
 ```
 
-Playing a track:
+### Step 3: Controlling the Player
+Once you have an `AudioTrack`, you can control the player for a specific guild.
+
 ```java
+// Get the player for a specific guild (it will be created if it doesn't exist)
+GuildPlayer guildPlayer = playerManager.getPlayerFactory().getOrCreatePlayer(guild.getIdLong());
+
 // Connect to a voice channel
- playerManager.getPlayerFactory().getOrCreatePlayer(/* Guild ID */)
-        .connect(/* Voice Channel */);
+guildPlayer.connect(voiceChannel);
 
 // Play a track
-playerManager.getPlayerFactory().getOrCreatePlayer(/* Guild ID */)
-        .play(/* Track */);
+guildPlayer.play(track);
 
+// Pause or resume playback
+guildPlayer.pause();
+guildPlayer.resume();
+
+// Stop the player and clear the current track
+guildPlayer.stop();
+
+// Set the volume (0-150, 100 is default)
+guildPlayer.setVolume(80);
+
+// Get player status
+AudioTrack currentTrack = guildPlayer.getCurrentTrack();
+boolean isPaused = guildPlayer.isPaused();
+int volume = guildPlayer.getVolume();
+
+// Disconnect from the voice channel
+guildPlayer.disconnect(guild);
 ```
 
-
-
-# This Project is Still in early development so if you find any bugs, please report them on [Github](https://github.com/LOLYAY-INC/LavaBoth/issues)
+## Bug Reports & Feature Requests
+This project is in active development. If you find a bug or have an idea for a new feature, please [open an issue on GitHub](https://github.com/LOLYAY-INC/LavaBoth/issues). We appreciate your feedback
