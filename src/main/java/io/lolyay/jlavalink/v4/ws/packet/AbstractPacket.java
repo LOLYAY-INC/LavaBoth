@@ -17,8 +17,9 @@ public abstract class AbstractPacket implements Packet {
         return client;
     }
 
-    public void setClient(JLavaLinkClient client){
+    public AbstractPacket setClient(JLavaLinkClient client){
         this.client = client;
+        return this;
     }
 
     @Override

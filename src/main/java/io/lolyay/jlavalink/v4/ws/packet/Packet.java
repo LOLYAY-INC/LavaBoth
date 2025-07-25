@@ -7,7 +7,7 @@ import io.lolyay.lavaboth.backends.lavalinkclient.player.LavaLinkPlayerManager;
 
 public interface Packet {
     JLavaLinkClient getClient();
-    void setClient(JLavaLinkClient client);
+    Packet setClient(JLavaLinkClient client);
 
     /**
      * @return The unique opcode that identifies this packet type

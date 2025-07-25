@@ -36,12 +36,16 @@ public class S2CBaseEventPacket extends AbstractPacket implements S2CPacket {
 
     @Override
     public void recivePacket(){
+        S2CBaseEventPacket packet;
         switch (eventType){
-            case TrackEndEvent -> gson.fromJson(extraData, TrackEndEvent.class).recivePacket();
-            case TrackStartEvent -> gson.fromJson(extraData, TrackStartEvent.class).recivePacket();
-            case TrackExceptionEvent -> gson.fromJson(extraData, TrackExceptionEvent.class).recivePacket();
-            case TrackStuckEvent -> gson.fromJson(extraData, TrackStuckEvent.class).recivePacket();
-            case WebSocketCloseEvent -> gson.fromJson(extraData, WebSocketClosedEvent.class).recivePacket();
+            case TrackEndEvent -> packet = gson.fromJson(extraData, TrackEndEvent.class);
+            case TrackStartEvent -> packet = gson.fromJson(extraData, TrackStartEvent.class);
+            case TrackExceptionEvent -> packet = gson.fromJson(extraData, TrackExceptionEvent.class);
+            case TrackStuckEvent -> packet = gson.fromJson(extraData, TrackStuckEvent.class);
+            case WebSocketCloseEvent -> packet = gson.fromJson(extraData, WebSocketClosedEvent.class);
+            default -> throw new IllegalStateException("Unexpected value: " + eventType);
         }
+        packet.setClient(getClient());
+        packet.recivePacket();
     }
 }
