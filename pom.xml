@@ -6,7 +6,7 @@
 
     <groupId>dev.lolyay</groupId>
     <artifactId>lavaboth</artifactId>
-    <version>5.2.1</version>
+    <version>5.2.3</version>
 
     <properties>
         <maven.compiler.source>23</maven.compiler.source>
@@ -96,7 +96,7 @@
         <dependency>
             <groupId>dev.lolyay</groupId>
             <artifactId>eventbus</artifactId>
-            <version>1.2.1</version>
+            <version>1.4.9</version>
         </dependency>
         <dependency>
             <groupId>dev.arbjerg</groupId>

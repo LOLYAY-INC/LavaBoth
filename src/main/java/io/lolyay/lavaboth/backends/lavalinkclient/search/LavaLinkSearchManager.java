@@ -7,6 +7,7 @@ import io.lolyay.lavaboth.backends.lavaplayer.search.LavaPlayerSearchManager;
 import io.lolyay.lavaboth.backends.lavaplayer.search.LavaResultHandler;
 import io.lolyay.lavaboth.search.AbstractSearcher;
 import io.lolyay.lavaboth.search.Search;
+import io.lolyay.lavaboth.search.searchers.DefaultSearcher;
 import io.lolyay.lavaboth.tracks.RequestorData;
 import io.lolyay.lavaboth.utils.Logger;
 
@@ -47,15 +48,19 @@ public class LavaLinkSearchManager extends AbstractSearchManager {
         try {
 
             AbstractSearcher currentSearcher = searchers.get(index);
-
+            final String xquery;
+            if (currentSearcher instanceof DefaultSearcher)
+                xquery = query.replace("https://", "").replace("http://", "");
+            else
+                xquery = query;
             // Perform the search with this single searcher. This returns a future immediately.
-            CompletableFuture<Search> singleSearchFuture = searchWith(new LinkQuery(requestorData, query, currentSearcher));
+            CompletableFuture<Search> singleSearchFuture = searchWith(new LinkQuery(requestorData, xquery, currentSearcher));
 
             singleSearchFuture.whenComplete((result, exception) -> {
                 if (exception == null && result != null && result.result().isSuccess()) {
                     mainFuture.complete(result);
                 } else {
-                    trySearcherAtIndex(query, requestorData, index + 1, mainFuture);
+                    trySearcherAtIndex(xquery, requestorData, index + 1, mainFuture);
                 }
             });
         } catch (Exception e) {

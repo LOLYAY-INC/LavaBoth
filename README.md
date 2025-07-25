@@ -1,6 +1,6 @@
 # LavaBoth
 
-[![Maven Central](https://img.shields.io/maven-central/v/io.lolyay/lavaboth?style=for-the-badge&label=Maven%20Central)](https://search.maven.org/artifact/io.lolyay/lavaboth)
+[![Maven Central](https://img.shields.io/maven-central/v/dev.lolyay/lavaboth?style=for-the-badge&label=Maven%20Central)](https://search.maven.org/artifact/dev.lolyay/lavaboth)
 [![GitHub Issues](https://img.shields.io/github/issues/LOLYAY-INC/LavaBoth?style=for-the-badge)](https://github.com/LOLYAY-INC/LavaBoth/issues)
 [![License](https://img.shields.io/github/license/LOLYAY-INC/LavaBoth?style=for-the-badge)](https://github.com/LOLYAY-INC/LavaBoth/blob/main/LICENSE)
 
@@ -33,9 +33,9 @@ Add the repository and dependency to your `pom.xml`:
 
 <dependencies>
     <dependency>
-        <groupId>io.lolyay</groupId>
+        <groupId>dev.lolyay</groupId>
         <artifactId>lavaboth</artifactId>
-        <version>4.0.1</version>
+        <version>5.2.3</version>
     </dependency>
 </dependencies>
 ```

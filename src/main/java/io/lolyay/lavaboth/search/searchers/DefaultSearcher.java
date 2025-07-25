@@ -12,7 +12,7 @@ public class DefaultSearcher extends AbstractSearcher {
 
     @Override
     public boolean canSearch(String query) {
-        return query.contains(":");
+        return true;
     }
 
     @Override
