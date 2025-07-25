@@ -11,7 +11,11 @@ public class HttpSearcher extends AbstractSearcher {
 
     @Override
     public boolean canSearch(String query) {
-        return query.startsWith("http://") || query.startsWith("https://");
+            return (query.startsWith("http://") || query.startsWith("https://") )&&
+                !query.contains("spotify") &&
+                !query.contains("soundcloud") &&
+                !query.contains("tidal") &&
+                !query.contains("deezer");
     }
 
     @Override
