@@ -31,7 +31,7 @@ public class S2CStatsPacket extends AbstractPacket implements S2CPacket {
 
     @Override
     public void recivePacket() {
-        Logger.log("Stats packet received");
+        Logger.debug("Stats packet received");
         ClientStats stats = new ClientStats();
         stats.players = players;
         stats.playingPlayers = playingPlayers;
