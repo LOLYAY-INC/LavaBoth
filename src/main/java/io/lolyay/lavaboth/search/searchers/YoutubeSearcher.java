@@ -11,7 +11,7 @@ public class YoutubeSearcher extends AbstractSearcher {
 
     @Override
     public boolean canSearch(String query) {
-        return true;
+        return !(query.contains("https://") && !query.contains("youtu"));
     }
 
     @Override

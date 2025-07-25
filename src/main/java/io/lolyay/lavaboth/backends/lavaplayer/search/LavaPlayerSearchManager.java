@@ -32,14 +32,14 @@ public class LavaPlayerSearchManager extends AbstractSearchManager {
      * @param mainFuture The main future to complete with the final result.
      */
     private void trySearcherAtIndex(String query, RequestorData requestorData, int index, CompletableFuture<Search> mainFuture) {
-
-        if(!searchers.get(index).canSearch(query)) {
-            trySearcherAtIndex(query, requestorData, index + 1, mainFuture);
-        }
         // BASE CASE: If we've run out of searchers, the search has failed.
         if (index >= searchers.size()) {
             mainFuture.complete(Search.wasNotFound(Search.SearchResult.ERROR("No searcher found a result for: " + query), "LavaPlayer", query));
             return; // Stop the recursion.
+        }
+
+        if(!searchers.get(index).canSearch(query)) {
+            trySearcherAtIndex(query, requestorData, index + 1, mainFuture);
         }
 
         AbstractSearcher currentSearcher = searchers.get(index);

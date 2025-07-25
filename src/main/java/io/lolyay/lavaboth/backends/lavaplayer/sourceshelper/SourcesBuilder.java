@@ -46,9 +46,8 @@ public class SourcesBuilder {
                 new WebWithThumbnail(),
                 new WebEmbeddedWithThumbnail(),
                 new MWebWithThumbnail(),
-                new AndroidMusicWithThumbnail(),
-                new AndroidWithThumbnail()
-                );
+                new AndroidMusicWithThumbnail()
+        );
         source.useOauth2(oauthToken, skipInit);
         sources.add(source);
         return this;
