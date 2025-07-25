@@ -1,6 +1,7 @@
 package io.lolyay.lavaboth.backends.lavaplayer.player;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
+import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import io.lolyay.lavaboth.backends.common.AbstractPlayer;
 import io.lolyay.lavaboth.backends.common.TrackDecodingException;
 import io.lolyay.lavaboth.backends.lavaplayer.AudioSendHandler;
@@ -24,7 +25,9 @@ public class LavaPlayerPlayer extends AbstractPlayer {
     public void play(MusicAudioTrack track) {
         LavaPlayerTrackCoder coder = new LavaPlayerTrackCoder(audioPlayerManager.getAudioPlayerManager());
         try {
-            audioPlayer.playTrack(coder.decode(track.encodedTrack()));
+            AudioTrack audioTrack = coder.decode(track.encodedTrack());
+            audioTrack.setUserData(track.userData());
+            audioPlayer.playTrack(audioTrack);
         } catch (TrackDecodingException e) {
             throw new RuntimeException(e);
         }
