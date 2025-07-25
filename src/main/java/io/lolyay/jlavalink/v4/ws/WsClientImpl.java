@@ -31,6 +31,7 @@ public class WsClientImpl extends WebSocketClient {
             Logger.warn("Unknown packet: " + s);
             return;
         }
+        Logger.debug("Received packet: " + s);
         packet.setClient(client);
         packet.recivePacket();
 

@@ -10,8 +10,7 @@ public class YoutubeMusicSearcher extends AbstractSearcher {
 
     @Override
     public boolean canSearch(String query) {
-        return query.startsWith("ytmsearch:") ||
-                query.contains("music.youtube.com/watch");
+        return true;
     }
 
     @Override

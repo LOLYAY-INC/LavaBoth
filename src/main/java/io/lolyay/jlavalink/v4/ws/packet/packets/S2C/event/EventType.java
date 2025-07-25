@@ -15,5 +15,5 @@ public enum EventType {
     @Expose
     TrackStuckEvent,
     @Expose
-    WebSocketCloseEvent
+    WebSocketClosedEvent
 }

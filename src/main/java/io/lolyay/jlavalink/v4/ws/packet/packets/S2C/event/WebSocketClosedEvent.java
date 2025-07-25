@@ -20,6 +20,8 @@ public class WebSocketClosedEvent extends S2CBaseEventPacket {
 
 
     public void recivePacket() {
+        if(!getClient().getClientPlayerFactory().getOrCreatePlayer(guildId).shouldBePlaying)
+            return;
 
         Logger.err("#######"); // exclamation mark
         Logger.err("#     #");

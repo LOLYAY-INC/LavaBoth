@@ -75,14 +75,19 @@ public class LavaLinkPlayer extends AbstractPlayer {
 
     @Override
     public void connect(AudioChannel channel) {
-        CompletableFuture<LavaLinkPlayer> future = new CompletableFuture<>();
-        LinkVoiceDispatchInterceptor.connectWaitFuture = future;
-        channel.getJDA().getDirectAudioController().connect(channel);
-        future.join();
+        if(channel.getGuild().getSelfMember().getVoiceState() == null || !channel.getGuild().getSelfMember().getVoiceState().inAudioChannel()) {
+            CompletableFuture<LavaLinkPlayer> future = new CompletableFuture<>();
+            LinkVoiceDispatchInterceptor.connectWaitFuture = future;
+            channel.getJDA().getDirectAudioController().connect(channel);
+            future.join();
+            clientPlayer.shouldBePlaying = true;
+        }
+
     }
 
     @Override
     public void disconnect(Guild guild) {
+        clientPlayer.shouldBePlaying = false;
         guild.getJDA().getDirectAudioController().disconnect(guild);
     }
 

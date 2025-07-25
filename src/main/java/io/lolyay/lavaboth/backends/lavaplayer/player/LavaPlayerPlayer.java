@@ -68,8 +68,10 @@ public class LavaPlayerPlayer extends AbstractPlayer {
 
     @Override
     public void connect(AudioChannel channel) {
-        channel.getGuild().getAudioManager().setSendingHandler(new AudioSendHandler(audioPlayer));
-        channel.getGuild().getAudioManager().openAudioConnection(channel);
+        if(!channel.getGuild().getAudioManager().isConnected()) {
+            channel.getGuild().getAudioManager().setSendingHandler(new AudioSendHandler(audioPlayer));
+            channel.getGuild().getAudioManager().openAudioConnection(channel);
+        }
     }
 
     @Override

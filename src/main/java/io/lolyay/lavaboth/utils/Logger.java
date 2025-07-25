@@ -1,6 +1,8 @@
 package io.lolyay.lavaboth.utils;
 
 
+import io.lolyay.lavaboth.LavaBoth;
+
 import javax.swing.*;
 import java.time.LocalTime;
 
@@ -32,6 +34,7 @@ public class Logger {
  }
 
     public static void debug(String message) {
+        if(!LavaBoth.debug) return;
         String debugMessage = formatLogMessage(Color.LIGHT_GRAY.getCode(), "DEBUG", message);
         System.out.println(debugMessage);
     }

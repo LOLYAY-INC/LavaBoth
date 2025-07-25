@@ -11,9 +11,7 @@ public class YoutubeSearcher extends AbstractSearcher {
 
     @Override
     public boolean canSearch(String query) {
-        return query.startsWith("ytsearch:") ||
-                query.contains("youtube.com/watch") ||
-                query.contains("youtu.be/");
+        return true;
     }
 
     @Override

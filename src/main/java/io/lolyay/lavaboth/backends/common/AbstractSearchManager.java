@@ -18,7 +18,7 @@ import java.util.function.Consumer;
 
 public abstract class AbstractSearchManager {
     private final AbstractPlayerManager playerManager;
-    private ThreadNamingExecutorService executorService = new ThreadNamingExecutorService(Executors.newCachedThreadPool());
+    private final ThreadNamingExecutorService executorService = new ThreadNamingExecutorService(Executors.newCachedThreadPool());
     public AbstractSearchManager(AbstractPlayerManager playerManager) {
         this.playerManager = playerManager;
 

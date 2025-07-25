@@ -21,6 +21,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class ClientPlayer {
     public JLavaLinkClient client;
+    public boolean shouldBePlaying = true;
 
 
 

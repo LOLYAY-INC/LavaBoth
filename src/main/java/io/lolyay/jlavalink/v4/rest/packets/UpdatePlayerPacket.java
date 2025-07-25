@@ -34,6 +34,7 @@ public class UpdatePlayerPacket implements Packet<RestGetPlayerResult> {
         this.guildId = guildId;
         this.sessionId = sessionId;
         this.request = request;
+        Logger.debug(new GsonBuilder().setPrettyPrinting().excludeFieldsWithoutExposeAnnotation().create().toJson(this));
     }
 
     public Optional<Object> getBody() {
