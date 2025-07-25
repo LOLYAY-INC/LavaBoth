@@ -3,6 +3,7 @@ package io.lolyay.jlavalink.v4.ws.packet.packets.S2C.event;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 import io.lolyay.jlavalink.v4.datatypes.ClientTrack;
 import io.lolyay.jlavalink.v4.ws.packet.AbstractPacket;
 import io.lolyay.jlavalink.v4.ws.packet.S2CPacket;
@@ -20,6 +21,7 @@ public class S2CBaseEventPacket extends AbstractPacket implements S2CPacket {
 
     @NotNull
     @Expose
+    @SerializedName("type")
     public EventType eventType;
 
     @Nullable

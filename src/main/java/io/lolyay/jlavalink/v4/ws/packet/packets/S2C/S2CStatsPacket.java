@@ -62,9 +62,9 @@ public class S2CStatsPacket extends AbstractPacket implements S2CPacket {
         @Expose
         int cores;
         @Expose
-        long systemLoad;
+        float systemLoad;
         @Expose
-        long lavalinkLoad;
+        float lavalinkLoad;
     }
 
     public static class FrameStats {

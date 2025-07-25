@@ -6,7 +6,7 @@
 
     <groupId>dev.lolyay</groupId>
     <artifactId>lavaboth</artifactId>
-    <version>5.2.3</version>
+    <version>5.2.7</version>
 
     <properties>
         <maven.compiler.source>23</maven.compiler.source>
@@ -161,7 +161,7 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
+         <!--   <plugin>
                 <groupId>org.sonatype.central</groupId>
                 <artifactId>central-publishing-maven-plugin</artifactId>
                 <version>0.8.0</version>
@@ -169,7 +169,7 @@
                 <configuration>
                     <publishingServerId>central</publishingServerId>
                 </configuration>
-            </plugin>
+            </plugin>-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
