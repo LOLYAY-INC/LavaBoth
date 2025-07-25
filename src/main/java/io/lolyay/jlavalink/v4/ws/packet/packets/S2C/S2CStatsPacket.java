@@ -49,30 +49,30 @@ public class S2CStatsPacket extends AbstractPacket implements S2CPacket {
 
     public static class Memory {
         @Expose
-        int free;
+        long free;
         @Expose
-        int used;
+        long used;
         @Expose
-        int allocated;
+        long allocated;
         @Expose
-        int reservable;
+        long reservable;
     }
 
     public static class CPU {
         @Expose
         int cores;
         @Expose
-        int systemLoad;
+        long systemLoad;
         @Expose
-        int lavalinkLoad;
+        long lavalinkLoad;
     }
 
     public static class FrameStats {
         @Expose
-        int sent;
+        long sent;
         @Expose
-        int nulled;
+        long nulled;
         @Expose
-        int deficit;
+        long deficit;
     }
 }
