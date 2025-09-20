@@ -46,7 +46,7 @@ public class LavaplayerTest {
             fail("Error creating JDA",e);
         }
         playerManager.getSearchManager().registerDefaultSearchers();
-        new SourcesBuilder((LavaPlayerPlayerManager) playerManager).addDefault().addYoutubeDlp("C:\\Users\\racistNUMBER1\\Downloads\\yt-dlp.exe").buildAndRegister();
+        new SourcesBuilder((LavaPlayerPlayerManager) playerManager).addDefault().addYoutubeDlp("I:\\yt-dlp.exe").buildAndRegister();
         searchResultHandler(playerManager.getSearchManager().search("never gonna give you up").join());
 
     }
@@ -57,7 +57,7 @@ public class LavaplayerTest {
                 fail("Track could not be found, " + search);
             }
             case ERROR -> {
-                fail("Error searching track, " + search);
+                fail("Error searching track, " + search.result().getMessage());
 
             }
             case SUCCESS -> {

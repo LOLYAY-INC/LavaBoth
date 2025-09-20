@@ -66,6 +66,7 @@ public class LavaPlayerPlayer extends AbstractPlayer {
 
     @Override
     public MusicAudioTrack getCurrentTrack() {
+        if(audioPlayer.getPlayingTrack() == null) return null;
         return MusicAudioTrack.fromTrack(audioPlayerManager,audioPlayer.getPlayingTrack(),(RequestorData) audioPlayer.getPlayingTrack().getUserData());
     }
 
