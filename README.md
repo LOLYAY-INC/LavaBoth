@@ -27,7 +27,7 @@ Add the dependency to your `pom.xml`:
     <dependency>
         <groupId>dev.lolyay</groupId>
         <artifactId>lavaboth</artifactId>
-        <version>5.2.3</version>
+        <version>5.6.7/version>
     </dependency>
 </dependencies>
 ```
