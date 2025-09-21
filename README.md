@@ -21,16 +21,8 @@ When building a music-focused Discord bot with Java, developers typically have t
 ## Installation
 
 ### Maven
-Add the repository and dependency to your `pom.xml`:
+Add the dependency to your `pom.xml`:
 ```xml
-<repositories>
-    <repository>
-        <id>lolyay-releases</id>
-        <name>lolyay.dev Maven Repo</name>
-        <url>https://maven.lolyay.dev/releases</url>
-    </repository>
-</repositories>
-
 <dependencies>
     <dependency>
         <groupId>dev.lolyay</groupId>
