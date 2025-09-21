@@ -33,15 +33,11 @@ Add the dependency to your `pom.xml`:
 ```
 
 ### Gradle (Kotlin DSL)
-Add the repository and dependency to your `build.gradle.kts`:
+Add this dependency to your `build.gradle.kts`:
 ```kotlin
-repositories {
-    mavenCentral()
-    maven("https://maven.lolyay.dev/releases")
-}
 
 dependencies {
-    implementation("io.lolyay:lavaboth:4.0.1")
+    implementation("dev.lolyay:lavaboth:5.6.7")
 }
 ```
 
