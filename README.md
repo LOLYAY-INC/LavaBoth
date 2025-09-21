@@ -76,7 +76,8 @@ AbstractPlayerManager playerManager = LavaPlayerPlayerManager.getBuilder()
 
 // Configure and register audio sources
 new SourcesBuilder(playerManager)
-    .addDefault() // YouTube, SoundCloud, etc.
+    .addYoutubeSource("YOUR OAUTH2 TOKEN IF YOU HAVE ONE")
+    .addDefault() // SoundCloud, etc.
     // .addYoutubeDlp("path/to/yt-dlp.exe") // For better YouTube support
     .buildAndRegister();
 
