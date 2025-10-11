@@ -20,8 +20,11 @@ import com.sedmelluq.discord.lavaplayer.source.twitch.TwitchStreamAudioSourceMan
 import com.sedmelluq.discord.lavaplayer.source.vimeo.VimeoAudioSourceManager;
 import com.sedmelluq.discord.lavaplayer.source.yamusic.YandexMusicAudioSourceManager;
 import dev.lavalink.youtube.YoutubeAudioSourceManager;
+import dev.lavalink.youtube.YoutubeSourceOptions;
 import dev.lavalink.youtube.clients.*;
+import io.lolyay.lavaboth.LavaBoth;
 import io.lolyay.lavaboth.backends.lavaplayer.player.LavaPlayerPlayerManager;
+import io.lolyay.lavaboth.utils.Logger;
 
 import java.util.ArrayList;
 import java.util.function.Function;
@@ -37,17 +40,34 @@ public class SourcesBuilder {
     }
 
 
-    public SourcesBuilder addYoutube(String oauthToken) {
+    public SourcesBuilder addYoutube(String oauthToken, YoutubeSourceOptions options) {
         boolean skipInit = !oauthToken.isEmpty();
-        YoutubeAudioSourceManager source = new YoutubeAudioSourceManager(
-                new MusicWithThumbnail(),
-                new TvHtml5EmbeddedWithThumbnail(),
-                new AndroidVrWithThumbnail(),
-                new WebWithThumbnail(),
-                new WebEmbeddedWithThumbnail(),
-                new MWebWithThumbnail(),
-                new AndroidMusicWithThumbnail()
-        );
+        YoutubeAudioSourceManager source;
+        if(options!= null)
+            source = new YoutubeAudioSourceManager(
+                    options,
+                    new MusicWithThumbnail(),
+                    new TvHtml5EmbeddedWithThumbnail(),
+                    new AndroidVrWithThumbnail(),
+                    new WebWithThumbnail(),
+                    new WebEmbeddedWithThumbnail(),
+                    new MWebWithThumbnail(),
+                    new AndroidMusicWithThumbnail()
+            );
+        else {
+            Logger.err("No YoutubeSourceOptions provided, there may be errors during playback, refer to https://github.com/lavalink-devs/youtube-source?tab=readme-ov-file#using-a-remote-cipher-server");
+            source = new YoutubeAudioSourceManager(
+                    new YoutubeSourceOptions().setRemoteCipherUrl(LavaBoth.defaultRemoteCipheringServer, null),
+                    new MusicWithThumbnail(),
+                    new TvHtml5EmbeddedWithThumbnail(),
+                    new AndroidVrWithThumbnail(),
+                    new WebWithThumbnail(),
+                    new WebEmbeddedWithThumbnail(),
+                    new MWebWithThumbnail(),
+                    new AndroidMusicWithThumbnail()
+            );
+        }
+
         source.useOauth2(oauthToken, skipInit);
         sources.add(source);
         return this;

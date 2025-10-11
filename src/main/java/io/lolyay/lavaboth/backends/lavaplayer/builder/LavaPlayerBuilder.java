@@ -2,6 +2,7 @@ package io.lolyay.lavaboth.backends.lavaplayer.builder;
 
 import com.sedmelluq.discord.lavaplayer.format.AudioDataFormat;
 import com.sedmelluq.discord.lavaplayer.player.AudioConfiguration;
+import dev.lavalink.youtube.YoutubeSourceOptions;
 import io.lolyay.lavaboth.backends.lavaplayer.player.LavaPlayerPlayerManager;
 
 public class LavaPlayerBuilder {
@@ -10,10 +11,16 @@ public class LavaPlayerBuilder {
     private AudioDataFormat decoderFormat;
     private boolean useGhostSeeking = true;
     private int trackStuckTimeout = 0;
+    private YoutubeSourceOptions options;
 
 
     public LavaPlayerBuilder setResamplingQuality(AudioConfiguration.ResamplingQuality resamplingQuality) {
         this.resamplingQuality = resamplingQuality;
+        return this;
+    }
+
+    public LavaPlayerBuilder setYoutubeOptions(YoutubeSourceOptions options) {
+        this.options = options;
         return this;
     }
 

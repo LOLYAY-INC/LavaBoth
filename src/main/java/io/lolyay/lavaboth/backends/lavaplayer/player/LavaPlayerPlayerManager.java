@@ -4,6 +4,7 @@ import com.sedmelluq.discord.lavaplayer.format.AudioDataFormat;
 import com.sedmelluq.discord.lavaplayer.player.AudioConfiguration;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
+import dev.lavalink.youtube.YoutubeSourceOptions;
 import io.lolyay.lavaboth.backends.common.AbstractPlayerManager;
 import io.lolyay.lavaboth.backends.lavaplayer.search.LavaPlayerSearchManager;
 import io.lolyay.lavaboth.backends.lavaplayer.builder.LavaPlayerBuilder;
